@@ -1,5 +1,3 @@
-import {random_int_exclusive} from '../../../libs/helpers.js';
-
 /**
  * Creates the array that represents a randomly generated maze.
  *  0 = black
@@ -72,8 +70,8 @@ export default class Grid {
     // directions to fill the maze grid
     const possible_squares = [];
     const start_square = [];
-    start_square[0] = random_int_exclusive(0, Math.floor(this.height * 0.5)) * 2 + 1;
-    start_square[1] = random_int_exclusive(0, Math.floor(this.width * 0.5)) * 2 + 1;
+    start_square[0] = this._random_int(0, Math.floor(this.height * 0.5)) * 2 + 1;
+    start_square[1] = this._random_int(0, Math.floor(this.width * 0.5)) * 2 + 1;
     this.squares[start_square[0]][start_square[1]] = 2;
     possible_squares.push(start_square);
 
@@ -81,7 +79,7 @@ export default class Grid {
     // the maze pathway tree
     while (possible_squares.length > 0) {
       // The next square to be joined on is selected randomly
-      const chosen_index = random_int_exclusive(0, possible_squares.length);
+      const chosen_index = this._random_int(0, possible_squares.length);
       const chosen_square = possible_squares[chosen_index];
 
       // Set the chosen square to white and then
@@ -167,7 +165,7 @@ export default class Grid {
     }
     
     if (link_count > 0) {
-      const link_choice = random_int_exclusive(0, link_count);
+      const link_choice = this._random_int(0, link_count);
       const link_x = links[2 * link_choice];
       const link_y = links[2 * link_choice + 1];
       this.squares[link_x][link_y] = 1;
@@ -204,5 +202,9 @@ export default class Grid {
     if (max_square_size < this.mySquareSize) {
       throw new Error("Canvas too small");
     }
+  }
+  
+  _random_int(min, max) {
+    return min + Math.floor(Math.random() * (max - min));
   }
 }
